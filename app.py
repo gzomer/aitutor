@@ -312,8 +312,8 @@ def get_relevant_terms(text):
     for item in doc_relevants.main_phrases:
         relevant_terms.append({'source': 'phrases', 'label':item.value, 'score':item.score})
 
-    for item in doc_relevants.main_sentences:
-        relevant_terms.append({'source': 'sentences', 'label':item.value, 'score':item.score})
+        for item in doc_relevants.main_sentences:
+            relevant_terms.append({'source': 'sentences', 'label':item.value, 'score':item.score})
 
     for item in doc_relevants.main_syncons:
         relevant_terms.append({'source': 'syncons', 'label':item.lemma, 'score':item.score})
@@ -375,4 +375,4 @@ def app_home():
     return app.send_static_file('app.html')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=5001, use_reloader=True, debug=True)
+    app.run(host='0.0.0.0',port=5051, use_reloader=True, debug=True)
