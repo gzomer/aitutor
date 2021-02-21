@@ -1,0 +1,39 @@
+<% extends "app.html" %>
+
+<% block content %>
+
+<div class="container-lg">
+  <div class="row">
+    <div class="col-md-3">
+      <div style="margin-bottom:30px">
+        <h5>Topics</h5>
+        <% for tag in tags %>
+        <a href="/[[explore_url]]/[[tag]]" class="tag badge badge-info">[[tag]]</a>
+        <% endfor %>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div style="padding-left: 30px">
+        <div class="px-3 pb-md-4 mx-auto text-center">
+          <h1>[[title]]</h1>
+        </div>
+        <div class="row">
+        	<% for content in contents %>
+        	<div class="col-4">
+	        	<div class="card mb-4">
+		          <div class="card-body">
+		            <h6 class="card-title">
+		            	<a href="/learn/[[content.slug]]/[[content._id]]">[[content.title]]</a>
+		            </h6>
+		            <p class="card-text">[[content.description]]</p>
+		          </div>
+		        </div>
+	       	</div>
+	       	<% endfor %>
+	       </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% endblock %>

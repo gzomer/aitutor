@@ -1,0 +1,69 @@
+<% extends "app.html" %>
+
+<% block content %>
+<div class="container-lg">
+  <div class="row">
+    <div class="col-md-3">
+      <a style="margin-bottom:30px" href="#questions" class="btn btn-lg btn-primary btn-block">Practice</a>
+      <div style="margin-bottom:30px">
+        <h5>Explore</h5>
+        <% for tag in tags %>
+        <a href="/explore/[[tag]]" class="tag badge badge-info">[[tag]]</a>
+        <% endfor %>
+      </div>
+      <div>
+        <h5>Related content</h5>
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title">Card title</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div style="padding-left: 30px">
+        <div class="px-3 pb-md-4 mx-auto text-center">
+          <h1>[[content.title]]</h1>
+        </div>
+        <div>
+          <div>Source: <a href="[[content.url]]">[[content.url]]</a></div>
+          <div>
+            [[content.html|safe]]
+          </div>
+          <hr style="margin: 40px 0px;">
+          <div id="questions">
+            <h2>Questions</h2>
+            <form id="answers" method="POST" action="#questions">
+            <% for question in content.questions %>
+              <p>[[question.question]]</p>
+              <% for choice in question.choices %>
+              <div class="form-check">
+                <input <% if question.selected_answer == choice %>checked<% endif %> name="question-[[question.id]]" value="[[choice]]" class="form-check-input" type="radio" id="question-[[question.id]]-answer-[[loop.index]]">
+                <label class="form-check-label"
+                    for="question-[[question.id]]-answer-[[loop.index]]">
+                  [[choice]]
+                </label>
+              </div>
+              <% endfor %>
+              <% if question.error %>
+              <div style="max-width:400px" class="alert alert-danger" role="alert">
+                [[question.error]]
+              </div>
+              <% endif %>
+              <% if question.success %>
+              <div style="max-width:400px" class="alert alert-success" role="alert">
+                Correct answer!
+              </div>
+              <% endif %>
+            <% endfor %>
+            <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% endblock %>
