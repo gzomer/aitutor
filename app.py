@@ -24,8 +24,6 @@ from nltk import sent_tokenize
 from readability import Document
 # from transformers import pipeline
 
-os.environ["EAI_USERNAME"] = 'gustavozomer@gmail.com'
-os.environ["EAI_PASSWORD"] = 'Expertai$123'
 client = ExpertAiClient()
 
 class CustomFlask(Flask):
@@ -177,12 +175,17 @@ def explore(search=None):
 @app.route('/contents/<search>')
 def contents(search=None):
     ids = []
+    contents = []
+    tags = []
+
     if session.get('user_id'):
         user = mongo.db.User.find_one({'_id':ObjectId(session.get('user_id'))})
         if user:
             ids = user['contents']
 
-    contents, tags = get_contents(search, ids)
+    if ids:
+        contents, tags = get_contents(search, ids)
+
     return render_template('contents.html', explore_url='contents', title='My Materials', contents=contents, tags=tags)
 
 @app.route('/dashboard')
