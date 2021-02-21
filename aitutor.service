@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance to serve AI Tutor
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/opt/aitutor
+Environment="PATH=/opt/aitutor/env/bin"
+ExecStart=/opt/aitutor/env/bin/uwsgi --ini aitutor.ini
+
+[Install]
+WantedBy=multi-user.target
