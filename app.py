@@ -40,7 +40,7 @@ class CustomFlask(Flask):
     ))
 
 app = CustomFlask(__name__)
-app.config["MONGO_URI"] = "mongodb://localhost:27019/aitutor"
+app.config["MONGO_URI"] = "mongodb://localhost:27017/aitutor"
 app.config['SECRET_KEY'] = 'AITUTOR_SECRETKEY'
 mongo = PyMongo(app)
 CORS(app)
