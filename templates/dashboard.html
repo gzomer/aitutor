@@ -6,25 +6,61 @@
 	<div class="row">
 		<div class="col">
 			<h3>Needs improvement</h3>
-			<% for score in scores['worst'] %>
-				<a href="/explore/[[score.tag]]" class="tag badge badge-danger">
-					[[score.tag]] -  [[score.score|round]]
-				</a>
-			<% endfor %>
+			<table class="table table-sm">
+				<% for score in scores['worst'] %>
+				<tr>
+					<td>
+						<a href="/explore/[[score.tag]]" class="tag badge badge-danger">
+							[[score.tag]]
+						</a>
+					</td>
+					<td>
+						<div class="progress" style="margin-top: 8px">
+						  <div class="progress-bar bg-danger" role="progressbar" style="width: [[score.score|round]]%;">
+						  	[[score.score|round]]%
+						  </div>
+						</div>
+					</td>
+				</tr>
+				<% endfor %>
+			</table>
 		</div>
 		<div class="col">
 			<h3>Best scores</h3>
-			<% for score in scores['best'] %>
-				<a href="/explore/[[score.tag]]" class="tag badge badge-success">
-					[[score.tag]] -  [[score.score|round]]
-				</a>
-			<% endfor %>
+			<table class="table table-sm">
+				<% for score in scores['best'] %>
+				<tr>
+					<td>
+						<a href="/explore/[[score.tag]]" class="tag badge badge-success">
+							[[score.tag]]
+						</a>
+					</td>
+					<td>
+						<div class="progress" style="margin-top: 8px">
+						  <div class="progress-bar bg-success" role="progressbar" style="width: [[score.score|round]]%;">
+						  	[[score.score|round]]%
+						  </div>
+						</div>
+					</td>
+				</tr>
+				<% endfor %>
+			</table>
 		</div>
+	</div>
+	<div class="row mt-4">
 		<div class="col">
 			<h3>Most studied</h3>
 			<% for score in scores['total'] %>
 				<a href="/explore/[[score.tag]]" class="tag badge badge-info">
-					[[score.tag]] -  [[score.score|round]]
+					[[score.tag]]
+				</a>
+			<% endfor %>
+		</div>
+		<div class="col">
+			<h3>Less studied</h3>
+			<% for score in scores['less'] %>
+				<a href="/explore/[[score.tag]]" class="tag badge badge-info">
+					[[score.tag]]
 				</a>
 			<% endfor %>
 		</div>
