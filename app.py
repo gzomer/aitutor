@@ -46,6 +46,7 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/aitutor"
 app.config['SECRET_KEY'] = 'AITUTOR_SECRETKEY'
 mongo = PyMongo(app)
 CORS(app)
+_SHOULD_ADD = True
 
 @app.before_request
 def handle_user_auth():
@@ -74,8 +75,6 @@ def add_content():
         return re.match(regex, url) is not None
 
     url = req.args.get('url')
-    skip_cache = True
-
     if not url or not is_url_valid(url):
         return redirect('/')
 
@@ -191,6 +190,18 @@ def learn(title, id):
 
         return render_template('learn.html', content=content, tags=tags, related_content=related_content)
 
+@app.route('/link', methods=["GET", "POST"])
+def link_content():
+    url = req.args.get('url')
+    content = mongo.db.Content.find_one({'url': url})
+
+    if content:
+        return redirect(f'/learn/{content["slug"]}/{content["_id"]}')
+    elif _SHOULD_ADD:
+        return redirect(f'/add?url={url}')
+    else:
+        return redirect(url)
+
 @app.route('/')
 def home():
     contents, tags = get_contents()
@@ -287,7 +298,7 @@ def get_cache_key(text):
 def get_content_from_url(url):
     def srcrepl(base_url, match):
         absolute_link = urljoin(base_url, match.group(3))
-        absolute_link = '/add?url=' + absolute_link
+        absolute_link = '/link?url=' + absolute_link
         return "<" + match.group(1) + match.group(2) + "=" + "\"" + absolute_link + "\"" + match.group(4) + ">"
 
     def relative_to_absolute_urls(fragment, base_url):
