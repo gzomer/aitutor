@@ -245,13 +245,14 @@ def dashboard():
 
             contents_map = {str(content['_id']):content for content in contents}
 
-            # TODO - Improve
             maps_score_correct = defaultdict(int)
             maps_score_wrong = defaultdict(int)
             maps_score = defaultdict(int)
             maps_total = defaultdict(int)
 
             for answer in answers:
+                if answer['contentId'] not in contents_map:
+                    continue
                 content = contents_map[answer['contentId']]
                 relevant_tag = content['tags']['phrases'][0]
                 maps_score_correct[relevant_tag] += answer['stats']['correct']
@@ -286,7 +287,7 @@ def get_contents(search=None, ids=None, limit=50):
         else:
             query['tags.all'] = search
 
-    contents = mongo.db.Content.find(query, {'_id':1, 'title':1, 'slug':1, 'tags.phrases':1, 'description':1}).limit(limit)
+    contents = mongo.db.Content.find(query, {'_id':1, 'title':1, 'slug':1, 'tags.phrases':1, 'description':1}).sort('created_at', -1).limit(limit)
     contents = list(contents)
     tags = list(set([tag for content in contents for tag in content['tags']['phrases']]))
 
@@ -477,6 +478,8 @@ def get_choices(word):
 
         if similar != word:
             choices.append(similar)
+
+        choices = list(set(choices))
 
     return [similar for similar in choices if similar not in word][:_MAX_SIMILAR]
 
